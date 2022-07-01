@@ -57,11 +57,11 @@ async function run () {
             const result = await todoCollection.updateOne(filter, updatedDoc, options);
             res.send(result);
         });
-        app.get("/items/:id", async (req, res) => {
-            const itemId = req.params.id;
-            const query = { _id: ObjectId(itemId) };
-            const item = await itemCollection.findOne(query);
-            res.send(item);
+        app.get("/todos/:id", async (req, res) => {
+            const todoId = req.params.id;
+            const query = { _id: ObjectId(todoId) };
+            const todo = await todoCollection.findOne(query);
+            res.send(todo);
         });
 
     }
