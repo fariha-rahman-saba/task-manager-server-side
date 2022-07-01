@@ -35,6 +35,35 @@ async function run () {
             res.send(todos);
         });
 
+        app.post("/todos", async (req, res) => {
+            const todo = req.body;
+            const result = await todoCollection.insertOne(todo);
+            console.log("todo added");
+            res.send({ success: 'todo added' });
+        });
+
+        app.put('/todos/:id', async (req, res) => {
+            const id = req.params.id;
+            const updatedTodo = req.body;
+            // console.log(updatedItem);
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    isCompleted: updatedTodo.isCompleted
+                    //set to true
+                }
+            };
+            const result = await todoCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        });
+        app.get("/items/:id", async (req, res) => {
+            const itemId = req.params.id;
+            const query = { _id: ObjectId(itemId) };
+            const item = await itemCollection.findOne(query);
+            res.send(item);
+        });
+
     }
     finally {
 
